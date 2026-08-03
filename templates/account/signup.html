@@ -6,9 +6,11 @@
 {% endblock %}
 
 {% block page_content %}
+
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6 col-lg-5">
+
             <div class="card shadow">
 
                 <div class="card-header bg-success text-white text-center">
@@ -16,6 +18,7 @@
                 </div>
 
                 <div class="card-body">
+
                     <form method="post">
                         {% csrf_token %}
 
@@ -25,17 +28,22 @@
                             Sign Up
                         </button>
                     </form>
+
                 </div>
 
                 <div class="card-footer text-center">
                     <small>
                         Already have an account?
-                        <a href="{% url 'login' %}">Login</a>
+                        <a href="{% url 'account_login' %}">
+                            Login
+                        </a>
                     </small>
                 </div>
 
             </div>
+
         </div>
     </div>
 </div>
+
 {% endblock %}

@@ -12,16 +12,18 @@
         <div class="col-md-5">
 
             <div class="card shadow text-center">
+
                 <div class="card-header bg-danger text-white">
                     <h4>Logout</h4>
                 </div>
 
                 <div class="card-body">
+
                     <p class="lead">
                         Are you sure you want to logout?
                     </p>
 
-                    <form method="post">
+                    <form method="post" action="{% url 'account_logout' %}">
                         {% csrf_token %}
 
                         <button type="submit" class="btn btn-danger btn-block">
@@ -32,6 +34,7 @@
                     <a href="{% url 'home' %}" class="btn btn-secondary btn-block mt-2">
                         Cancel
                     </a>
+
                 </div>
 
             </div>
