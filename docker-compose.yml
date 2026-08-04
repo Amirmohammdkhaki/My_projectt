@@ -13,25 +13,23 @@ services:
 
     depends_on:
       - db
+    
 
-    environment:
-      - DJANGO_SECRET_KEY=django-insecure-b764$#(&o4o((cvy!z^nsseq5@erq#e^0%5r5a(%c24*f^*sde
-      - DJANGO_DEBUG=False
+    
 
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_HOST=db
-      - DB_PORT=5432
+    env_file:
+      - .env
+      
 
 
   db:
     image: postgres:14
 
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
 
     volumes:
       - postgres_data:/var/lib/postgresql/data
