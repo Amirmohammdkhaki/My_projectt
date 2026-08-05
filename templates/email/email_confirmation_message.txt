@@ -1,0 +1,20 @@
+{% load i18n %}
+{% autoescape off %}
+
+{% blocktrans with site_name=current_site.name %}
+Hello,
+
+Thank you for registering on {{ site_name }}.
+
+Please confirm your email address by clicking the link below:
+{% endblocktrans %}
+
+{{ activate_url }}
+
+{% blocktrans %}
+If you did not create this account, you can safely ignore this email.
+
+Thank you.
+{% endblocktrans %}
+
+{% endautoescape %}
