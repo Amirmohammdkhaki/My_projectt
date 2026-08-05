@@ -1,5 +1,29 @@
-# My_projectt
+# Django Blog
 
-This is my Django project.
+A Django web application built with:
 
-Updated on 2026-07-30.
+- Python
+- Django
+- PostgreSQL
+- Docker
+- Bootstrap
+
+## Features
+
+- User Authentication
+- Email Login
+- Custom User Model
+- Docker Support
+
+## Installation
+
+```bash
+docker compose up --build
+```
+
+## Technologies
+
+- Django
+- PostgreSQL
+- Docker
+- WhiteNoise
