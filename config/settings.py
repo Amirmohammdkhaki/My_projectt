@@ -11,10 +11,16 @@ env.read_env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+# ==========================
+# Security
+# ==========================
+
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
-DEBUG = env.bool("DJANGO_DEBUG", default=True)
-
+DEBUG = env.bool(
+    "DJANGO_DEBUG",
+    default=True
+)
 
 ALLOWED_HOSTS = [
     "localhost",
@@ -23,8 +29,13 @@ ALLOWED_HOSTS = [
 ]
 
 
+# ==========================
+# Applications
+# ==========================
+
 INSTALLED_APPS = [
 
+    # Django
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -32,14 +43,19 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 
+    # Sites
     "django.contrib.sites",
 
+    # Third party
     "crispy_forms",
     "crispy_bootstrap4",
 
+    # Local
     "accounts",
     "pages",
+    "products",
 
+    # Allauth
     "allauth",
     "allauth.account",
 ]
@@ -47,6 +63,10 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+
+# ==========================
+# Middleware
+# ==========================
 
 MIDDLEWARE = [
 
@@ -67,17 +87,21 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
 
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-
 ]
 
 
 ROOT_URLCONF = "config.urls"
 
 
+# ==========================
+# Templates
+# ==========================
+
 TEMPLATES = [
 
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "BACKEND":
+        "django.template.backends.django.DjangoTemplates",
 
         "DIRS": [
             BASE_DIR / "templates"
@@ -98,71 +122,57 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
 
             ],
-
         },
-
     },
-
 ]
 
 
 WSGI_APPLICATION = "config.wsgi.application"
 
 
-
+# ==========================
 # Database PostgreSQL
+# ==========================
 
 DATABASES = {
 
     "default": {
 
-        "ENGINE": "django.db.backends.postgresql",
+        "ENGINE":
+        "django.db.backends.postgresql",
 
-        "NAME": env("DB_NAME"),
+        "NAME":
+        env("DB_NAME"),
 
-        "USER": env("DB_USER"),
+        "USER":
+        env("DB_USER"),
 
-        "PASSWORD": env("DB_PASSWORD"),
+        "PASSWORD":
+        env("DB_PASSWORD"),
 
-        "HOST": env("DB_HOST"),
+        "HOST":
+        env("DB_HOST"),
 
-        "PORT": env.int("DB_PORT"),
+        "PORT":
+        env.int("DB_PORT"),
 
     }
-
 }
 
 
+# ==========================
+# Custom User
+# ==========================
 
-# Password validation
+# accounts/models.py
+# class CustomUser(AbstractUser)
 
-AUTH_PASSWORD_VALIDATORS = [
-
-    {
-        "NAME":
-        "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
-    },
-
-    {
-        "NAME":
-        "django.contrib.auth.password_validation.MinimumLengthValidator",
-    },
-
-    {
-        "NAME":
-        "django.contrib.auth.password_validation.CommonPasswordValidator",
-    },
-
-    {
-        "NAME":
-        "django.contrib.auth.password_validation.NumericPasswordValidator",
-    },
-
-]
+AUTH_USER_MODEL = "accounts.CustomUser"
 
 
-
+# ==========================
 # Authentication
+# ==========================
 
 AUTHENTICATION_BACKENDS = [
 
@@ -173,66 +183,79 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 
-
-AUTH_USER_MODEL = "accounts.CustomUser"
-
-
-
 LOGIN_REDIRECT_URL = "home"
 
 LOGOUT_REDIRECT_URL = "home"
 
 
+# ==========================
+# Allauth
+# ==========================
 
-# Django Allauth
-
-ACCOUNT_SESSION_REMEMBER = True
-
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_LOGIN_METHODS = {
+    "email"
+}
 
 ACCOUNT_EMAIL_REQUIRED = True
 
 ACCOUNT_UNIQUE_EMAIL = True
 
-ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_USERNAME_REQUIRED = False
+
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 
+ACCOUNT_SIGNUP_FIELDS = [
 
-# Email Development
-# نمایش لینک تایید در ترمینال Docker
+    "email*",
 
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+    "password1*",
+
+    "password2*",
+
+]
 
 
+ACCOUNT_SESSION_REMEMBER = True
+
+
+# ==========================
+# Email
+# ==========================
+
+EMAIL_BACKEND = (
+    "django.core.mail.backends.console.EmailBackend"
+)
+
+
+# ==========================
+# Language
+# ==========================
 
 LANGUAGE_CODE = "en-us"
 
-
 TIME_ZONE = "UTC"
 
-
 USE_I18N = True
-
 
 USE_TZ = True
 
 
-
-# Static files
+# ==========================
+# Static
+# ==========================
 
 STATIC_URL = "/static/"
 
 
 STATICFILES_DIRS = [
 
-    os.path.join(BASE_DIR, "static")
+    BASE_DIR / "static"
 
 ]
 
 
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 
 STATICFILES_STORAGE = (
@@ -240,12 +263,30 @@ STATICFILES_STORAGE = (
 )
 
 
+# ==========================
+# Media
+# عکس محصولات و کاربران
+# ==========================
 
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+MEDIA_URL = "/media/"
+
+MEDIA_ROOT = BASE_DIR / "media"
 
 
 
+# ==========================
+# Default Field
+# ==========================
+
+DEFAULT_AUTO_FIELD = (
+    "django.db.models.BigAutoField"
+)
+
+
+
+# ==========================
 # Crispy
+# ==========================
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 
@@ -253,7 +294,9 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 
-# Test database
+# ==========================
+# Test Database
+# ==========================
 
 if "test" in sys.argv:
 
@@ -261,9 +304,11 @@ if "test" in sys.argv:
 
         "default": {
 
-            "ENGINE": "django.db.backends.sqlite3",
+            "ENGINE":
+            "django.db.backends.sqlite3",
 
-            "NAME": ":memory:",
+            "NAME":
+            ":memory:",
 
         }
 
