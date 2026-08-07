@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 class Category(models.Model):
@@ -27,10 +28,13 @@ class Product(models.Model):
     stock = models.PositiveIntegerField(default=0)
     active = models.BooleanField(default=True)
 
-    cover = models.ImageField(upload_to='products/')
+    cover = models.ImageField(upload_to="products/")
 
     datetime_create = models.DateTimeField(auto_now_add=True)
     datetime_modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("product_detail", kwargs={"pk": self.pk})
