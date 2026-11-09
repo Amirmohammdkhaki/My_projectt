@@ -1,20 +1,21 @@
 {% extends "_base.html" %}
 
 {% block page_title %}
-    Home
+    صفحه اصلی | وب‌سایت من
 {% endblock %}
 
 {% block page_content %}
-
-<div class="container mt-5">
-    <div class="jumbotron text-center">
-        <h1 class="display-4">Welcome Home</h1>
-        <p class="lead">
-            This is the home page.
-        </p>
-    </div>
+<div class="jumbotron text-center bg-white shadow-sm border rounded p-5">
+    <h1 class="display-4 font-weight-bold text-primary">به خانه خوش آمدید</h1>
+    <p class="lead text-muted mt-3">
+        این صفحه اصلی پروژه جنگوی شماست. چیزهای بزرگی بسازید!
+    </p>
+    <hr class="my-4">
+    {% if not user.is_authenticated %}
+        <p>لطفاً برای دسترسی به امکانات بیشتر، وارد شوید یا ثبت‌نام کنید.</p>
+        <a class="btn btn-primary btn-lg mt-3" href="{% url 'account_signup' %}" role="button">شروع کنید</a>
+    {% else %}
+        <a class="btn btn-success btn-lg mt-3" href="#" role="button">ورود به داشبورد</a>
+    {% endif %}
 </div>
-
-
-
-{% endblock %} 
+{% endblock %}

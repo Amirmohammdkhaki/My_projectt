@@ -13,7 +13,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Security
 # ==========================
 
-SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-change-this-key")
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 DEBUG = env.bool("DJANGO_DEBUG", default=True)
 
