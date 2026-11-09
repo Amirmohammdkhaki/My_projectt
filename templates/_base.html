@@ -14,96 +14,16 @@
     <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
-    <!-- فونت فارسی وزیرمتن -->
-    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet" type="text/css" />
-    
-    <style>
-        body {
-            font-family: 'Vazirmatn', sans-serif;
-            background-color: #f4f7f6; /* رنگ پس‌زمینه کل سایت */
-        }
+    <!-- 🔗 لینک به فایل CSS اصلی (شامل فونت، استایل منو و دکمه‌ها) -->
+    <link rel="stylesheet" href="{% static 'css/_base.css' %}">
 
-        /* 🎨 استایل اختصاصی نوار ناوبری (Navbar) */
-        .custom-navbar {
-            background: linear-gradient(135deg, #1f1c2c 0%, #0f0c29 100%);
-            border-bottom: 2px solid #00f2fe; /* خط نئونی پایین نوار */
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            padding: 15px 0;
-        }
-
-        /* استایل لوگو و اسم سایت */
-        .custom-navbar .navbar-brand {
-            color: #ffffff !important;
-            font-weight: 800;
-            font-size: 1.5rem;
-            letter-spacing: 1px;
-            text-shadow: 0 0 10px rgba(0, 242, 254, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .custom-navbar .navbar-brand:hover {
-            text-shadow: 0 0 20px rgba(0, 242, 254, 0.9);
-            color: #00f2fe !important;
-        }
-
-        /* متن خوش‌آمدگویی */
-        .custom-navbar .welcome-text {
-            color: #d1d5db;
-            font-size: 0.95rem;
-        }
-        
-        .custom-navbar .welcome-text strong {
-            color: #00f2fe;
-        }
-
-        /* 🎨 استایل دکمه‌ها در حالت تاریک */
-        .btn-neon-primary {
-            color: #00f2fe;
-            border-color: #00f2fe;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        .btn-neon-primary:hover {
-            background: #00f2fe;
-            color: #0f0c29;
-            box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
-        }
-
-        .btn-neon-danger {
-            color: #ff4b2b;
-            border-color: #ff4b2b;
-            background: transparent;
-            transition: all 0.3s ease;
-        }
-
-        .btn-neon-danger:hover {
-            background: #ff4b2b;
-            color: #fff;
-            box-shadow: 0 0 15px rgba(255, 75, 43, 0.6);
-        }
-
-        .btn-solid-accent {
-            background: linear-gradient(45deg, #00f2fe, #4facfe);
-            border: none;
-            color: #0f0c29;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-
-        .btn-solid-accent:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4);
-            color: #0f0c29;
-        }
-    </style>
-
+    <!-- بلوک برای CSS های اضافی صفحات دیگر -->
     {% block extra_css %}{% endblock %}
 </head>
 
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- 🚀 نوار ناوبری جدید -->
+    <!-- 🚀 نوار ناوبری -->
     <nav class="navbar navbar-expand-lg custom-navbar sticky-top">
         <div class="container">
             <a class="navbar-brand" href="/">✦ وب‌سایت من</a>
@@ -136,6 +56,10 @@
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     
+    <!-- 🔗 لینک به فایل JS اصلی -->
+    <script src="{% static 'js/_base.js' %}"></script>
+
+    <!-- بلوک برای JS های اضافی صفحات دیگر -->
     {% block extra_js %}{% endblock %}
 </body>
 </html>

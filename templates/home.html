@@ -1,21 +1,69 @@
 {% extends "_base.html" %}
+{% load static %}
 
 {% block page_title %}
-    صفحه اصلی | وب‌سایت من
+    تست نهایی سیستم
 {% endblock %}
 
 {% block page_content %}
-<div class="jumbotron text-center bg-white shadow-sm border rounded p-5">
-    <h1 class="display-4 font-weight-bold text-primary">به خانه خوش آمدید</h1>
-    <p class="lead text-muted mt-3">
-        این صفحه اصلی پروژه جنگوی شماست. چیزهای بزرگی بسازید!
-    </p>
-    <hr class="my-4">
-    {% if not user.is_authenticated %}
-        <p>لطفاً برای دسترسی به امکانات بیشتر، وارد شوید یا ثبت‌نام کنید.</p>
-        <a class="btn btn-primary btn-lg mt-3" href="{% url 'account_signup' %}" role="button">شروع کنید</a>
-    {% else %}
-        <a class="btn btn-success btn-lg mt-3" href="#" role="button">ورود به داشبورد</a>
-    {% endif %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white text-center py-3">
+                    <h3 class="mb-0">🔍 داشبورد تست یکپارچه</h3>
+                </div>
+                
+                <div class="card-body p-4">
+                    
+                    <!-- ۱. تست فونت و CSS -->
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">۱. تست فونت و فایل CSS</h5>
+                        <p class="mb-0">
+                            اگر این متن را با فونت زیبای <strong>وزیرمتن</strong> می‌بینی و رنگ پس‌زمینه کارت سفید است، یعنی فایل <code>_base.css</code> و فونت لوکال ۱۰۰٪ سالم هستند.
+                        </p>
+                    </div>
+
+                    <!-- ۲. تست دکمه‌های اختصاصی (نئونی) -->
+                    <div class="alert alert-secondary">
+                        <h5 class="alert-heading">۲. تست دکمه‌های نئونی (CSS)</h5>
+                        <p>موس را روی این دکمه‌ها نگه دار. اگر درخشش (Glow) دیدی، کدهای CSS سالم هستند:</p>
+                        <button class="btn btn-sm btn-neon-primary px-4 rounded-pill ml-2">دکمه آبی</button>
+                        <button class="btn btn-sm btn-neon-danger px-4 rounded-pill">دکمه قرمز</button>
+                    </div>
+
+                    <!-- ۳. تست جاوااسکریپت -->
+                    <div class="alert alert-warning">
+                        <h5 class="alert-heading">۳. تست جاوااسکریپت (JS)</h5>
+                        <p>روی این دکمه کلیک کن. اگر یک پیام (Alert) ظاهر شد، یعنی فایل <code>_base.js</code> وصل است:</p>
+                        <button class="btn btn-dark" onclick="alert('✅ جاوااسکریپت به درستی کار می‌کند!')">تست جاوااسکریپت</button>
+                        <br>
+                        <small class="text-muted mt-2 d-block">(همچنین کلید F12 را بزن و در تب Console پیام "سایت با موفقیت لود شد" را ببین).</small>
+                    </div>
+
+                    <!-- ۴. تست اتصال به دیتابیس و ادمین -->
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading">۴. تست دیتابیس</h5>
+                        <p class="mb-0">
+                            وضعیت کاربر فعلی: 
+                            {% if user.is_authenticated %}
+                                <strong>وارد شده‌اید</strong> ({{ user.email }})
+                            {% else %}
+                                <strong>وارد نشده‌اید</strong> (کاربر مهمان)
+                            {% endif %}
+                            <br>
+                            برای تست دیتابیس، به <a href="/admin/" target="_blank" class="alert-link">پنل ادمین</a> برو و با کاربر خودت لاگین کن.
+                        </p>
+                    </div>
+
+                </div>
+                <div class="card-footer text-center bg-light">
+                    <small class="text-muted">اگر تمام موارد بالا سبز یا درست بودند، پروژه شما بدون هیچ نقصی ران (Run) است.</small>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 {% endblock %}

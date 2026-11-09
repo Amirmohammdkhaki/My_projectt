@@ -1,4 +1,3 @@
-
 import os
 import sys
 from pathlib import Path
@@ -146,19 +145,11 @@ LOGOUT_REDIRECT_URL = "home"
 # Allauth
 # ==========================
 
+# از روش جدید تنظیم فیلدهای ثبت‌نام استفاده شده است
 ACCOUNT_LOGIN_METHODS = {"email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "password1*", "password2*"]
 
-ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-
-ACCOUNT_SIGNUP_FIELDS = [
-    "email*",
-    "password1*",
-    "password2*",
-]
-
 ACCOUNT_SESSION_REMEMBER = True
 
 # ==========================
@@ -168,17 +159,17 @@ ACCOUNT_SESSION_REMEMBER = True
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 # ==========================
-# Language
+# Language & Time (تغییر به فارسی و تهران)
 # ==========================
 
-LANGUAGE_CODE = "en-us"
-TIME_ZONE = "UTC"
+LANGUAGE_CODE = "fa-ir"
+TIME_ZONE = "Asia/Tehran"
 
 USE_I18N = True
 USE_TZ = True
 
 # ==========================
-# Static Files
+# Static Files (تنظیمات اصلاح‌شده)
 # ==========================
 
 STATIC_URL = "/static/"
@@ -189,9 +180,11 @@ STATICFILES_DIRS = [
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
-STATICFILES_STORAGE = (
-    "whitenoise.storage.CompressedManifestStaticFilesStorage"
-)
+# 🔴 نکته مهم: در حالت DEBUG از وایت‌نویز فشرده استفاده نکن تا فایل‌ها لود شوند
+if DEBUG:
+    STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+else:
+    STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # ==========================
 # Media
