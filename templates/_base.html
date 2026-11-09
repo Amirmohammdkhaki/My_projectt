@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <title>
+
+        {% block page_title %}
+
+        {% endblock %}
+
+    </title>
+
+
+    <!-- Bootstrap 4 CSS -->
+
+    <link rel="stylesheet"
+          href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+
+</head>
+
+
+<body>
+
+
+<!-- Navbar -->
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+    <div class="container">
+
+
+        <a class="navbar-brand" href="/">
+            My Website
+        </a>
+
+
+
+        <div class="ml-auto">
+
+
+            {% if user.is_authenticated %}
+
+
+                <span class="mr-3">
+
+                    Hello, {{ user.email }}
+
+                </span>
+
+
+
+                <a href="{% url 'account_logout' %}"
+                   class="btn btn-danger">
+
+                    Logout
+
+                </a>
+
+
+
+            {% else %}
+
+
+
+                <a href="{% url 'account_login' %}"
+                   class="btn btn-outline-primary mr-2">
+
+                    Login
+
+                </a>
+
+
+
+                <a href="{% url 'account_signup' %}"
+                   class="btn btn-primary">
+
+                    Sign Up
+
+                </a>
+
+
+
+            {% endif %}
+
+
+
+        </div>
+
+
+    </div>
+
+
+</nav>
+
+
+
+
+
+<!-- Page Content -->
+
+
+{% block page_content %}
+
+{% endblock %}
+
+
+
+
+
+<!-- Bootstrap JS -->
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+
+</html>

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 __pycache__
 *.pyc
 *.pyo
@@ -16,3 +17,7 @@ venv/
 node_modules/
 staticfiles/
 media/
+=======
+venv/
+Turn on access from email host user by email host
+>>>>>>> ab8e8d2a79f0a9341ef1373a809ac5200758612a

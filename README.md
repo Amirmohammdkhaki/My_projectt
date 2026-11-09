@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <div align="center">
   <a href="https://instagram.com/m.hadi.hajihosseini">
     <img src="https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white" width="100"/>
@@ -53,3 +54,34 @@ Don't forget to add the new package to requirements.txt for further use:
 ```bash
 docker-compose exec web pip freeze > requirements.txt
 ```
+=======
+# Django Blog
+
+A Django web application built with:
+
+- Python
+- Django
+- PostgreSQL
+- Docker
+- Bootstrap
+
+## Features
+
+- User Authentication
+- Email Login
+- Custom User Model
+- Docker Support
+
+## Installation
+
+```bash
+docker compose up --build
+```
+
+## Technologies
+
+- Django
+- PostgreSQL
+- Docker
+- WhiteNoise
+>>>>>>> ab8e8d2a79f0a9341ef1373a809ac5200758612a
