@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 """config URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -20,7 +20,7 @@ from django.urls import path
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
-=======
+
 from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
@@ -40,4 +40,3 @@ if settings.DEBUG:
         settings.MEDIA_URL,
         document_root=settings.MEDIA_ROOT
     )
->>>>>>> ab8e8d2a79f0a9341ef1373a809ac5200758612a
