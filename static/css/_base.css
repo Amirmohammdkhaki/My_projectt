@@ -1,41 +1,23 @@
-/* =========================================
-   1. تعریف فونت وزیرمتن (لوکال)
-   ========================================= */
-@font-face {
-    font-family: 'Vazirmatn';
-    src: url('../fonts/Vazirmatn-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-    font-display: swap;
-}
+/* General */
 
-@font-face {
-    font-family: 'Vazirmatn';
-    src: url('../fonts/Vazirmatn-Bold.woff2') format('woff2');
-    font-weight: bold;
-    font-style: normal;
-    font-display: swap;
-}
-
-/* =========================================
-   2. تنظیمات کلی سایت
-   ========================================= */
 body {
     font-family: 'Vazirmatn', sans-serif;
-    background-color: #f4f7f6; /* رنگ پس‌زمینه کل سایت */
+    background-color: #f4f7f6;
 }
 
-/* =========================================
-   3. استایل اختصاصی نوار ناوبری (Navbar)
-   ========================================= */
+
+/* Navbar */
+
 .custom-navbar {
     background: linear-gradient(135deg, #1f1c2c 0%, #0f0c29 100%);
-    border-bottom: 2px solid #00f2fe; /* خط نئونی پایین نوار */
+    border-bottom: 2px solid #00f2fe;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 15px 0;
 }
 
-/* استایل لوگو و اسم سایت */
+
+/* Logo */
+
 .custom-navbar .navbar-brand {
     color: #ffffff !important;
     font-weight: 800;
@@ -50,7 +32,9 @@ body {
     color: #00f2fe !important;
 }
 
-/* متن خوش‌آمدگویی */
+
+/* Welcome Text */
+
 .custom-navbar .welcome-text {
     color: #d1d5db;
     font-size: 0.95rem;
@@ -60,9 +44,9 @@ body {
     color: #00f2fe;
 }
 
-/* =========================================
-   4. استایل دکمه‌ها در تم تاریک (نئونی)
-   ========================================= */
+
+/* Neon Buttons */
+
 .btn-neon-primary {
     color: #00f2fe;
     border-color: #00f2fe;
@@ -76,6 +60,7 @@ body {
     box-shadow: 0 0 15px rgba(0, 242, 254, 0.6);
 }
 
+
 .btn-neon-danger {
     color: #ff4b2b;
     border-color: #ff4b2b;
@@ -88,6 +73,9 @@ body {
     color: #fff;
     box-shadow: 0 0 15px rgba(255, 75, 43, 0.6);
 }
+
+
+/* Solid Button */
 
 .btn-solid-accent {
     background: linear-gradient(45deg, #00f2fe, #4facfe);

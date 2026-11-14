@@ -1,8 +1,5 @@
-// =========================================
-// اسکریپت‌های اصلی سایت
-// =========================================
+document.addEventListener("DOMContentLoaded", function () {
 
-document.addEventListener("DOMContentLoaded", function() {
-    // این خط فقط برای تست در کنسول مرورگر است
-    console.log("سایت با موفقیت لود شد و فایل JS متصل است.");
+    console.log("Website loaded successfully!");
+
 });
