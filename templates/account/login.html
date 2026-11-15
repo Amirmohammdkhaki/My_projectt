@@ -1,49 +1,490 @@
-{% extends "_base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <meta name="theme-color" content="#0a0f1e">
+    <title>ورود به باشگاه شیران</title>
+    
+    <!-- فونت‌ها و آیکون‌ها -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           RESET & VARIABLES
+           ========================================= */
+        :root {
+            --primary: #d4af37;
+            --primary-light: #f5d061;
+            --primary-dark: #aa7c11;
+            --bg-dark: #050810;
+            --bg-card: rgba(17, 24, 39, 0.85);
+            --text-main: #e0e7ff;
+            --text-muted: #6b7fa3;
+            --border-color: rgba(212, 175, 55, 0.25);
+            --glow: rgba(212, 175, 55, 0.4);
+        }
 
-{% block page_title %}
-    Login
-{% endblock %}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-{% block page_content %}
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
+        /* =========================================
+           BACKGROUND ANIMATIONS (PARTICLES & SHAPES)
+           ========================================= */
+        .bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            overflow: hidden;
+        }
 
-            <div class="card shadow">
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+        }
 
-                <div class="card-header bg-primary text-white text-center">
-                    <h4>Login</h4>
+        .shape-1 {
+            width: 400px;
+            height: 400px;
+            background: rgba(212, 175, 55, 0.3);
+            top: -150px;
+            right: -100px;
+            animation: floatShape1 15s infinite alternate;
+        }
+
+        .shape-2 {
+            width: 300px;
+            height: 300px;
+            background: rgba(59, 130, 246, 0.2);
+            bottom: -100px;
+            left: -50px;
+            animation: floatShape2 20s infinite alternate;
+        }
+
+        @keyframes floatShape1 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-50px, 50px) scale(1.1); }
+        }
+
+        @keyframes floatShape2 {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, -50px) scale(1.2); }
+        }
+
+        .particles-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            opacity: 0.3;
+            animation: floatParticle linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-100px) rotate(360deg); opacity: 0; }
+        }
+
+        /* =========================================
+           MAIN LOGIN CARD
+           ========================================= */
+        .login-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 440px;
+            padding: 20px;
+        }
+
+        .glass-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border-color);
+            border-radius: 28px;
+            padding: 50px 40px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 40px rgba(212, 175, 55, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: cardFadeIn 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        }
+
+        @keyframes cardFadeIn {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(212, 175, 55, 0.1), transparent 30%);
+            animation: rotateGlow 10s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotateGlow {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* =========================================
+           LOGO & HEADER
+           ========================================= */
+        .logo-area {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .logo-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.2rem;
+            color: var(--bg-dark);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4);
+            animation: pulseLogo 3s ease-in-out infinite;
+            position: relative;
+        }
+
+        .logo-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.5);
+            animation: rippleLogo 2.5s infinite;
+        }
+
+        @keyframes pulseLogo {
+            0%, 100% { transform: scale(1); box-shadow: 0 10px 30px rgba(212, 175, 55, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6); }
+        }
+
+        @keyframes rippleLogo {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .logo-area h1 {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #ffffff;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        .logo-area p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+
+        /* =========================================
+           FORM ELEMENTS
+           ========================================= */
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control {
+            width: 100%;
+            background: rgba(5, 8, 16, 0.7);
+            border: 1.5px solid var(--border-color);
+            border-radius: 12px;
+            color: #ffffff;
+            padding: 14px 18px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(5, 8, 16, 0.9);
+            border-color: var(--primary);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.25);
+            outline: none;
+        }
+
+        .form-control::placeholder {
+            color: rgba(107, 127, 163, 0.7);
+        }
+
+        /* =========================================
+           CHECKBOX & LINKS
+           ========================================= */
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .form-check input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background: transparent;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        .form-check input[type="checkbox"]:checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .form-check input[type="checkbox"]:checked::after {
+            content: '✔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--bg-dark);
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .forgot-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .forgot-link:hover {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        /* =========================================
+           SUBMIT BUTTON
+           ========================================= */
+        .btn-login {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border: none;
+            border-radius: 12px;
+            color: var(--bg-dark);
+            font-size: 1.1rem;
+            font-weight: 900;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-login::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-login:hover::before {
+            left: 100%;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.4);
+            color: var(--bg-dark);
+        }
+
+        /* =========================================
+           FOOTER
+           ========================================= */
+        .login-footer {
+            text-align: center;
+            margin-top: 30px;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .login-footer a {
+            color: var(--primary);
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin-right: 5px;
+        }
+
+        .login-footer a:hover {
+            color: #ffffff;
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 576px) {
+            .glass-card { padding: 40px 25px; }
+            .logo-area h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Animations -->
+    <div class="bg-container">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+    <div class="particles-container" id="particles"></div>
+
+    <!-- Main Login Card -->
+    <div class="login-wrapper">
+        <div class="glass-card">
+            
+            <div class="logo-area">
+                <div class="logo-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h1>باشگاه شیران</h1>
+                <p>خوش آمدید، لطفاً وارد شوید</p>
+            </div>
+
+            {% if form.errors %}
+                <div class="alert alert-danger" style="background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; font-size: 0.9rem; border-radius: 10px;">
+                    <i class="fas fa-exclamation-triangle ml-2"></i>
+                    نام کاربری یا رمز عبور اشتباه است.
+                </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label>ایمیل / نام کاربری</label>
+                    {{ form.login }}
+                </div>
+                
+                <div class="form-group">
+                    <label>رمز عبور</label>
+                    {{ form.password }}
+                </div>
+                
+                <div class="form-options">
+                    <label class="form-check">
+                        <input type="checkbox" name="remember">
+                        <span>مرا به خاطر بسپار</span>
+                    </label>
+                    <a href="{% url 'account_reset_password' %}" class="forgot-link">فراموشی رمز؟</a>
                 </div>
 
-                <div class="card-body">
-
-                    <form method="post">
-                        {% csrf_token %}
-
-                        {{ form|crispy }}
-
-                        <button type="submit" class="btn btn-primary btn-block">
-                            Login
-                        </button>
-                    </form>
-
-                </div>
-
-                <div class="card-footer text-center">
-                    <small>
-                        Don't have an account?
-                        <a href="{% url 'account_signup' %}">
-                            Sign Up
-                        </a>
-                    </small>
-                </div>
-
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>ورود به حساب</span>
+                </button>
+            </form>
+            
+            <div class="login-footer">
+                حساب کاربری ندارید؟ <a href="{% url 'account_signup' %}">ثبت‌نام کنید</a>
             </div>
 
         </div>
     </div>
-</div>
 
-{% endblock %}
+    <script>
+        // Apply CSS to Django form fields
+        document.addEventListener("DOMContentLoaded", function() {
+            const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="password"]');
+            inputs.forEach(input => {
+                input.classList.add('form-control');
+                if (!input.placeholder) {
+                    input.placeholder = "وارد کنید...";
+                }
+            });
+        });
+
+        // Generate floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            const size = Math.random() * 6 + 2;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-10px';
+            particle.style.animationDelay = Math.random() * 8 + 's';
+            particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

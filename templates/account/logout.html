@@ -1,46 +1,312 @@
-{% extends "_base.html" %}
-{% load crispy_forms_tags %}
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>خروج از حساب — باشگاه شیران</title>
+    
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Persian Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           RESET & VARIABLES
+           ========================================= */
+        :root {
+            --bg: #050810;
+            --bg-card: rgba(17, 24, 39, 0.85);
+            --red: #ef4444;
+            --red-light: #fca5a5;
+            --red-dark: #b91c1c;
+            --text: #ffffff;
+            --text-soft: #a5b4fc;
+            --muted: #6b7fa3;
+        }
 
-{% block page_title %}
-    Logout
-{% endblock %}
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-{% block page_content %}
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 10% 90%, rgba(59, 130, 246, 0.05) 0%, transparent 40%);
+        }
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
+        /* =========================================
+           BACKGROUND ANIMATIONS (PARTICLES)
+           ========================================= */
+        .bg-particles {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
 
-            <div class="card shadow text-center">
+        .particle {
+            position: absolute;
+            background: var(--red);
+            border-radius: 50%;
+            opacity: 0;
+            animation: floatUp linear infinite;
+            filter: blur(1px);
+            box-shadow: 0 0 10px var(--red);
+        }
 
-                <div class="card-header bg-danger text-white">
-                    <h4>Logout</h4>
-                </div>
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.4; }
+            100% { transform: translateY(-100px) scale(1.5) rotate(360deg); opacity: 0; }
+        }
 
-                <div class="card-body">
+        /* =========================================
+           LOGOUT CARD
+           ========================================= */
+        .logout-box {
+            text-align: center;
+            background: var(--bg-card);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 30px;
+            padding: 60px 50px;
+            max-width: 480px;
+            width: 90%;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.8), 0 0 50px rgba(239, 68, 68, 0.15);
+            position: relative;
+            z-index: 10;
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            overflow: hidden;
+        }
 
-                    <p class="lead">
-                        Are you sure you want to logout?
-                    </p>
+        /* خط بالای کارت */
+        .logout-box::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--red), transparent);
+            box-shadow: 0 0 20px var(--red);
+        }
 
-                    <form method="post" action="{% url 'account_logout' %}">
-                        {% csrf_token %}
+        @keyframes popIn {
+            0% { transform: scale(0.8) translateY(30px); opacity: 0; }
+            100% { transform: scale(1) translateY(0); opacity: 1; }
+        }
 
-                        <button type="submit" class="btn btn-danger btn-block">
-                            Logout
-                        </button>
-                    </form>
+        /* =========================================
+           ICON ANIMATION
+           ========================================= */
+        .icon-wrapper {
+            width: 110px; height: 110px;
+            margin: 0 auto 30px;
+            border-radius: 50%;
+            background: rgba(239, 68, 68, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3.5rem;
+            color: var(--red);
+            box-shadow: 0 0 0 12px rgba(239, 68, 68, 0.05);
+            position: relative;
+            animation: pulseIcon 3s infinite ease-in-out;
+        }
 
-                    <a href="{% url 'home' %}" class="btn btn-secondary btn-block mt-2">
-                        Cancel
-                    </a>
+        @keyframes pulseIcon {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 12px rgba(239, 68, 68, 0.05); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 20px rgba(239, 68, 68, 0.1); }
+        }
 
-                </div>
+        .icon-wrapper::after {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            animation: ripple 2s infinite;
+        }
 
-            </div>
+        @keyframes ripple {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(1.8); opacity: 0; }
+        }
 
+        /* =========================================
+           TEXT
+           ========================================= */
+        h1 {
+            font-weight: 900;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(255,255,255,0.2);
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.9;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        p strong {
+            color: var(--red-light);
+        }
+
+        /* =========================================
+           BUTTONS
+           ========================================= */
+        .btn-danger {
+            background: linear-gradient(135deg, var(--red), var(--red-dark));
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            font-weight: 900;
+            font-size: 1.1rem;
+            color: #fff;
+            cursor: pointer;
+            margin-bottom: 15px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(220, 38, 38, 0.3);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-danger::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-danger:hover::before {
+            left: 100%;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(220, 38, 38, 0.5);
+            background: linear-gradient(135deg, #ef4444, #b91c1c);
+        }
+
+        .btn-cancel {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 16px;
+            border-radius: 15px;
+            border: 2px solid rgba(107, 127, 163, 0.3);
+            color: var(--text-soft);
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.3s;
+        }
+
+        .btn-cancel:hover {
+            border-color: var(--text-soft);
+            color: #fff;
+            text-decoration: none;
+            background: rgba(165, 180, 252, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        /* =========================================
+           RESPONSIVE
+           ========================================= */
+        @media (max-width: 576px) {
+            .logout-box { padding: 40px 25px; }
+            h1 { font-size: 1.8rem; }
+            .icon-wrapper { width: 90px; height: 90px; font-size: 2.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Particles -->
+    <div class="bg-particles" id="particles"></div>
+
+    <!-- Logout Box -->
+    <div class="logout-box">
+        
+        <div class="icon-wrapper">
+            <i class="fas fa-power-off"></i>
         </div>
-    </div>
-</div>
+        
+        <h1>خروج از حساب</h1>
+        <p>
+            آیا مطمئن هستید که می‌خواهید خارج شوید؟<br>
+            برای مشاهده برنامه‌های خود باید <strong>مجدداً وارد</strong> شوید.
+        </p>
 
-{% endblock %}
+        <form method="post" action="{% url 'account_logout' %}">
+            {% csrf_token %}
+            {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+            {% endif %}
+
+            <button type="submit" class="btn-danger">
+                <i class="fas fa-sign-out-alt"></i> بله، خارج شو
+            </button>
+            
+            <a href="{% url 'home' %}" class="btn-cancel">
+                <i class="fas fa-arrow-right"></i> انصراف و بازگشت به خانه
+            </a>
+        </form>
+    </div>
+
+    <script>
+        // Generate floating particles
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.classList.add('particle');
+            
+            // اندازه تصادفی
+            const size = Math.random() * 20 + 5;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            
+            // موقعیت تصادفی
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.bottom = '-50px';
+            
+            // تاخیر و مدت زمان تصادفی
+            particle.style.animationDelay = Math.random() * 6 + 's';
+            particle.style.animationDuration = (Math.random() * 8 + 6) + 's';
+            
+            particlesContainer.appendChild(particle);
+        }
+    </script>
+</body>
+</html>

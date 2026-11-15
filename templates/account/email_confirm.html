@@ -3,122 +3,137 @@
 {% load account %}
 {% load allauth %}
 
-{% block page_title %}
-    {% trans "Confirm Email Address" %}
+{% block page_title %}تأیید ایمیل{% endblock %}
+
+{% block extra_css %}
+<style>
+    .confirm-wrapper {
+        min-height: 80vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 15px;
+    }
+    .confirm-card {
+        background: var(--shiran-bg-card);
+        border: 1px solid var(--shiran-border);
+        border-radius: 24px;
+        padding: 50px 40px;
+        max-width: 500px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 30px var(--shiran-blue-glow, rgba(59,130,246,0.15));
+        animation: confirmFadeIn 0.6s ease;
+    }
+    @keyframes confirmFadeIn {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .confirm-icon-wrap {
+        width: 100px; height: 100px;
+        margin: 0 auto 25px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--shiran-blue), var(--shiran-cyan));
+        display: flex; align-items: center; justify-content: center;
+        font-size: 2.5rem; color: #fff;
+        box-shadow: 0 10px 40px var(--shiran-glow);
+        animation: confirmPulse 2s infinite;
+    }
+    @keyframes confirmPulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+    .confirm-title {
+        font-size: 1.8rem;
+        font-weight: 900;
+        color: var(--shiran-text);
+        margin-bottom: 15px;
+    }
+    .confirm-text {
+        color: var(--shiran-muted);
+        line-height: 1.9;
+        margin-bottom: 25px;
+    }
+    .confirm-email-box {
+        background: var(--shiran-input-bg);
+        padding: 15px;
+        border-radius: 12px;
+        border-right: 4px solid var(--shiran-gold);
+        margin: 20px 0;
+        color: var(--shiran-text-soft);
+    }
+    .confirm-email-box strong {
+        color: var(--shiran-gold);
+        font-size: 1rem;
+    }
+    .confirm-btn {
+        width: 100%;
+        padding: 14px;
+        border: none;
+        border-radius: 12px;
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: #fff;
+        font-weight: 900;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        margin-top: 20px;
+    }
+    .confirm-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(16, 185, 129, 0.5);
+    }
+    .confirm-alert {
+        padding: 15px;
+        border-radius: 12px;
+        margin: 20px 0;
+        font-size: 0.95rem;
+    }
+    .confirm-alert-danger {
+        background: rgba(239, 68, 68, 0.1);
+        border-right: 4px solid #ef4444;
+        color: #fca5a5;
+    }
+    .confirm-alert-warning {
+        background: rgba(245, 158, 11, 0.1);
+        border-right: 4px solid #f59e0b;
+        color: #fcd34d;
+    }
+    .confirm-btn-warning {
+        background: linear-gradient(135deg, #f59e0b, #d97706);
+        box-shadow: 0 8px 25px rgba(245, 158, 11, 0.3);
+    }
+</style>
 {% endblock %}
 
 {% block page_content %}
+<div class="confirm-wrapper">
+    <div class="confirm-card">
 
-<div class="container py-5">
-    <div class="row justify-content-center align-items-center">
-        <div class="col-md-8 col-lg-6">
+        <div class="confirm-icon-wrap">
+            <i class="fas fa-envelope-open-text"></i>
+        </div>
 
-            <div class="card shadow-lg border-0 rounded-4 p-4 mt-4 bg-white">
+        <h2 class="confirm-title">تأیید آدرس ایمیل</h2>
 
-                <div class="text-center mb-4">
-                    <div class="mb-3">
-                        <span style="font-size: 60px;">📧</span>
-                    </div>
+        {% if confirmation %}
 
-                    <h2 class="fw-bold">
-                        {% trans "Confirm Email Address" %}
-                    </h2>
+            {% user_display confirmation.email_address.user as user_display %}
 
-                    <p class="text-muted mb-0">
-                        {% trans "Verify your email to activate your account." %}
-                    </p>
+            {% if can_confirm %}
+
+                <p class="confirm-text">
+                    لطفاً تأیید کنید که این ایمیل به شما تعلق دارد:
+                </p>
+
+                <div class="confirm-email-box">
+                    <strong>{{ confirmation.email_address.email }}</strong>
+                    <br>
+                    <small style="color: var(--shiran-muted);">برای کاربر: {{ user_display }}</small>
                 </div>
 
-                {% if confirmation %}
-
-                    {% user_display confirmation.email_address.user as user_display %}
-
-                    {% if can_confirm %}
-
-                        <div class="alert alert-info text-center shadow-sm border-0">
-
-                            <h5 class="mb-3">
-                                ✅ {% trans "Almost Done!" %}
-                            </h5>
-
-                            {% blocktrans with confirmation.email_address.email as email %}
-                                Please confirm that
-                                <strong>{{ email }}</strong>
-                                belongs to user
-                                <strong>{{ user_display }}</strong>.
-                            {% endblocktrans %}
-
-                        </div>
-
-                        {% url "account_confirm_email" confirmation.key as action_url %}
-
-                        <form method="post" action="{{ action_url }}" class="mt-4">
-                            {% csrf_token %}
-                            {{ redirect_field }}
-
-                            <button type="submit"
-                                    class="btn btn-primary btn-lg w-100 rounded-3 shadow-sm">
-                                ✅ {% trans "Confirm Email" %}
-                            </button>
-                        </form>
-
-                        <div class="text-center mt-4">
-                            <small class="text-muted">
-                                {% trans "Click the button above to complete your email verification." %}
-                            </small>
-                        </div>
-
-                    {% else %}
-
-                        <div class="alert alert-danger text-center shadow-sm border-0">
-
-                            <h5 class="mb-3">
-                                ❌ {% trans "Confirmation Failed" %}
-                            </h5>
-
-                            {% blocktrans with confirmation.email_address.email as email %}
-                                Unable to confirm
-                                <strong>{{ email }}</strong>
-                                because it has already been confirmed by another account.
-                            {% endblocktrans %}
-
-                        </div>
-
-                    {% endif %}
-
-                {% else %}
-
-                    {% url "account_email" as email_url %}
-
-                    <div class="alert alert-warning text-center shadow-sm border-0">
-
-                        <div style="font-size: 55px;" class="mb-3">
-                            ⏳
-                        </div>
-
-                        <h5 class="fw-bold">
-                            {% trans "Invalid or Expired Link" %}
-                        </h5>
-
-                        <p class="mb-4">
-                            {% blocktrans %}
-                                This email confirmation link has expired or is no longer valid.
-                            {% endblocktrans %}
-                        </p>
-
-                        <a href="{{ email_url }}"
-                           class="btn btn-warning btn-lg rounded-3 shadow-sm px-4">
-                            🔄 {% trans "Request New Confirmation Email" %}
-                        </a>
-
-                    </div>
-
-                {% endif %}
-
-            </div>
-
-        </div>
-    </div>
-</div>
-
-{% endblock page_content %}
+                <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                    {% csrf_token %}
+                    {{ redirect_field }}
+                    <button type="submit" class="confirm-btn">
+                        <i class="fas fa-check ml-1"></i> بله، تأ

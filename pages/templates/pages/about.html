@@ -1,13 +1,952 @@
-{% extends '_base.html' %}
-
-
-{% block page_title %}
-    about
-{% endblock  %}
-
-
-
-{% block page_content %}
-    <h2>about </h2>
-{% endblock  %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>درباره ما — باشگاه شیران</title>
     
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Persian Font -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           1. متغیرهای تم تاریک (پیش‌فرض)
+           ============================================ */
+        :root, [data-theme="dark"] {
+            --primary-gold: #d4af37;
+            --primary-gold-light: #f5d061;
+            --primary-gold-dark: #aa7c11;
+            --bg-dark: #050810;
+            --bg-card: #111827;
+            --text-main: #e0e7ff;
+            --text-muted: #6b7fa3;
+            --border-color: rgba(212, 175, 55, 0.2);
+            --glow: rgba(212, 175, 55, 0.4);
+            --navbar-bg: rgba(17, 24, 39, 0.8);
+            --footer-bg: #050810;
+            --hero-overlay: rgba(5, 8, 16, 0.8);
+        }
+
+        /* ============================================
+           2. متغیرهای تم روشن
+           ============================================ */
+        [data-theme="light"] {
+            --primary-gold: #b8941f;
+            --primary-gold-light: #d4af37;
+            --primary-gold-dark: #8b6f14;
+            --bg-dark: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #475569;
+            --border-color: rgba(37, 99, 235, 0.2);
+            --glow: rgba(184, 148, 31, 0.25);
+            --navbar-bg: rgba(255, 255, 255, 0.9);
+            --footer-bg: #f1f5f9;
+            --hero-overlay: rgba(248, 250, 252, 0.9);
+        }
+
+        /* ============================================
+           3. Reset & General
+           ============================================ */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow-x: hidden;
+            line-height: 1.6;
+            transition: background-color 0.4s ease, color 0.4s ease;
+        }
+
+        a { text-decoration: none; transition: all 0.3s ease; }
+        a:hover { text-decoration: none; }
+
+        /* ============================================
+           4. Background Glows
+           ============================================ */
+        .bg-glow-1, .bg-glow-2, .bg-glow-3 {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(120px);
+            z-index: -1;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+        .bg-glow-1 {
+            top: -10%; right: -10%;
+            width: 700px; height: 700px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.15) 0%, transparent 70%);
+            animation: floatGlow 15s infinite alternate;
+        }
+        .bg-glow-2 {
+            top: 40%; left: -15%;
+            width: 600px; height: 600px;
+            background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+            animation: floatGlow 20s infinite alternate-reverse;
+        }
+        .bg-glow-3 {
+            bottom: -10%; right: 20%;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+            animation: floatGlow 18s infinite alternate;
+        }
+        @keyframes floatGlow {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(-60px, 60px) scale(1.1); }
+        }
+
+        /* ============================================
+           5. Topbar & Navbar
+           ============================================ */
+        .shiran-topbar {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 10px 0;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 100;
+            transition: background 0.4s ease;
+        }
+        .shiran-topbar i { color: var(--primary-gold); margin-left: 5px; }
+        
+        .shiran-navbar {
+            background: var(--navbar-bg);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.4s ease;
+        }
+        .shiran-brand {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--text-main) !important;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .shiran-brand img {
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--primary-gold);
+        }
+        .shiran-nav-link {
+            color: var(--text-muted) !important;
+            font-weight: 600;
+            padding: 8px 15px;
+            transition: all 0.3s;
+        }
+        .shiran-nav-link:hover, .shiran-nav-link.active {
+            color: var(--primary-gold) !important;
+        }
+
+        /* ============================================
+           6. Hero Section
+           ============================================ */
+        .hero-heavy {
+            position: relative;
+            padding: 150px 20px 120px;
+            text-align: center;
+            background: linear-gradient(to bottom, var(--hero-overlay), var(--bg-dark)),
+                        url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1600&q=80') center/cover fixed;
+            border-bottom: 1px solid var(--border-color);
+            transition: background 0.4s ease;
+        }
+        .hero-badge {
+            display: inline-block;
+            padding: 8px 25px;
+            background: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-color);
+            border-radius: 50px;
+            color: var(--primary-gold);
+            font-weight: 800;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            backdrop-filter: blur(10px);
+        }
+        .hero-title {
+            font-size: 4.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            letter-spacing: -2px;
+            text-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            transition: color 0.4s ease;
+        }
+        .hero-title span {
+            color: var(--primary-gold);
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+        }
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.9;
+            transition: color 0.4s ease;
+        }
+
+        /* ============================================
+           7. Stats Marquee
+           ============================================ */
+        .marquee-section {
+            background: rgba(212, 175, 55, 0.05);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            padding: 30px 0;
+            overflow: hidden;
+            display: flex;
+            position: relative;
+            z-index: 10;
+            transition: background 0.4s ease;
+        }
+        .marquee-content {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollMarquee 30s linear infinite;
+        }
+        .marquee-item {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin: 0 40px;
+            transition: color 0.4s ease;
+        }
+        .marquee-item span {
+            color: var(--primary-gold);
+            margin-right: 10px;
+            font-size: 2.2rem;
+        }
+        .marquee-dot {
+            width: 12px; height: 12px;
+            background: var(--primary-gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--primary-gold);
+            margin: 0 30px;
+            align-self: center;
+        }
+        @keyframes scrollMarquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ============================================
+           8. Story Split
+           ============================================ */
+        .story-section { padding: 100px 0; }
+        .story-row {
+            display: flex;
+            align-items: center;
+            gap: 80px;
+        }
+        .story-text { flex: 1; }
+        .story-text h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            line-height: 1.2;
+            transition: color 0.4s ease;
+        }
+        .story-text h2 span { color: var(--primary-gold); }
+        .story-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            line-height: 2.2;
+            margin-bottom: 25px;
+            text-align: justify;
+            transition: color 0.4s ease;
+        }
+        .story-quote {
+            background: rgba(212, 175, 55, 0.05);
+            border-right: 4px solid var(--primary-gold);
+            padding: 30px;
+            border-radius: 0 20px 20px 0;
+            font-style: italic;
+            color: var(--text-main);
+            font-size: 1.15rem;
+            margin: 35px 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        .story-image {
+            flex: 1;
+            border-radius: 40px 10px 40px 10px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: -20px 20px 60px rgba(0,0,0,0.3);
+        }
+        .story-image img {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            transition: transform 1s ease;
+        }
+        .story-image:hover img { transform: scale(1.05); }
+
+        /* ============================================
+           9. Bento Grid
+           ============================================ */
+        .bento-section { padding: 50px 0 100px; }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+        .bento-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .bento-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-gold);
+            box-shadow: 0 20px 50px rgba(212, 175, 55, 0.15);
+        }
+        .bento-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 4px;
+            background: linear-gradient(90deg, transparent, var(--primary-gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        .bento-card:hover::before { opacity: 1; }
+
+        .bento-large { grid-column: span 2; grid-row: span 2; }
+        .bento-wide { grid-column: span 2; }
+
+        .bento-icon {
+            font-size: 3rem;
+            color: var(--primary-gold);
+            margin-bottom: 20px;
+        }
+        .bento-card h4 {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 15px;
+            transition: color 0.4s ease;
+        }
+        .bento-card p {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            transition: color 0.4s ease;
+        }
+        .bento-image-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            opacity: 0.1;
+            transition: opacity 0.4s;
+        }
+        .bento-card:hover .bento-image-bg { opacity: 0.3; }
+        
+        .stat-box {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .stat-box .num {
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            line-height: 1;
+            text-shadow: 0 0 20px rgba(255,255,255,0.05);
+            transition: color 0.4s ease;
+        }
+        .stat-box .num span { color: var(--primary-gold); }
+        .stat-box .label {
+            color: var(--text-muted);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            transition: color 0.4s ease;
+        }
+
+        /* ============================================
+           10. Timeline
+           ============================================ */
+        .timeline-section {
+            padding: 100px 0;
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .timeline-section::before {
+            content: '';
+            position: absolute;
+            top: 0; bottom: 0; left: 50%;
+            width: 4px;
+            background: linear-gradient(to bottom, transparent, var(--primary-gold) 20%, var(--primary-gold) 80%, transparent);
+            transform: translateX(-50%);
+            border-radius: 4px;
+            box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+        }
+        .timeline-step {
+            display: flex;
+            justify-content: flex-end;
+            padding-right: 50%;
+            position: relative;
+            margin-bottom: 60px;
+        }
+        .timeline-step:nth-child(even) {
+            justify-content: flex-start;
+            padding-right: 0;
+            padding-left: 50%;
+        }
+        .timeline-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 35px;
+            border-radius: 20px;
+            width: 85%;
+            position: relative;
+            transition: all 0.4s;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        }
+        .timeline-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            border-color: var(--primary-gold);
+            box-shadow: 0 25px 50px rgba(212, 175, 55, 0.15);
+        }
+        .timeline-year {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--primary-gold);
+            margin-bottom: 10px;
+            font-family: monospace;
+        }
+        .timeline-card h5 {
+            color: var(--text-main);
+            font-weight: 800;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            transition: color 0.4s ease;
+        }
+        .timeline-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin: 0;
+            transition: color 0.4s ease;
+        }
+        .timeline-dot {
+            position: absolute;
+            top: 40px; left: 50%;
+            transform: translateX(-50%);
+            width: 24px; height: 24px;
+            background: var(--bg-dark);
+            border: 5px solid var(--primary-gold);
+            border-radius: 50%;
+            z-index: 2;
+            box-shadow: 0 0 25px var(--primary-gold);
+            transition: background 0.4s ease;
+        }
+
+        /* ============================================
+           11. FAQ Section (بخش جدید)
+           ============================================ */
+        .faq-section {
+            padding: 80px 0;
+            background: rgba(212, 175, 55, 0.02);
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+        }
+        .faq-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 50px;
+        }
+        .faq-title span { color: var(--primary-gold); }
+        .faq-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+        .faq-question {
+            padding: 20px 25px;
+            font-weight: 700;
+            color: var(--text-main);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s;
+        }
+        .faq-question:hover {
+            background: rgba(212, 175, 55, 0.05);
+        }
+        .faq-question i {
+            color: var(--primary-gold);
+            transition: transform 0.3s;
+        }
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 25px;
+            color: var(--text-muted);
+            transition: all 0.3s ease;
+        }
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+            padding: 0 25px 20px;
+        }
+
+        /* ============================================
+           12. CTA & Footer
+           ============================================ */
+        .cta-section {
+            padding: 100px 20px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), var(--bg-dark));
+            border-top: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            overflow: hidden;
+            transition: background 0.4s ease;
+        }
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(212, 175, 55, 0.1), transparent 30%);
+            animation: rotateGlow 15s linear infinite;
+        }
+        .cta-section h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+            transition: color 0.4s ease;
+        }
+        .cta-section p {
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            position: relative;
+            z-index: 2;
+            transition: color 0.4s ease;
+        }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--primary-gold), var(--primary-gold-dark));
+            color: #050810;
+            font-weight: 900;
+            font-size: 1.1rem;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            box-shadow: 0 10px 30px var(--glow);
+        }
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px var(--glow);
+            color: #050810;
+        }
+
+        .shiran-footer {
+            background: var(--footer-bg);
+            padding: 50px 0 20px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+            transition: background 0.4s ease, color 0.4s ease;
+        }
+        .shiran-footer h5 {
+            color: var(--primary-gold);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+        .footer-links {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a { color: var(--text-muted); }
+        .footer-links a:hover { color: var(--primary-gold); }
+
+        @keyframes rotateGlow { 100% { transform: rotate(360deg); } }
+
+        /* ============================================
+           13. Theme Toggle Button (دکمه شناور)
+           ============================================ */
+        #floatingThemeToggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 9999;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.4s;
+            backdrop-filter: blur(10px);
+        }
+        #floatingThemeToggle:hover {
+            transform: scale(1.1);
+        }
+
+        /* ============================================
+           14. Responsive
+           ============================================ */
+        @media (max-width: 1199px) {
+            .bento-grid { grid-template-columns: repeat(2, 1fr); }
+            .bento-large { grid-column: span 2; grid-row: span 1; }
+        }
+        @media (max-width: 991px) {
+            .hero-title { font-size: 3.5rem; }
+            .story-row { flex-direction: column; gap: 40px; }
+            .story-image img { height: 400px; }
+            .timeline-section::before { left: 30px; }
+            .timeline-step, .timeline-step:nth-child(even) {
+                justify-content: flex-start;
+                padding-right: 0;
+                padding-left: 70px;
+            }
+            .timeline-dot { left: 30px; }
+            .timeline-card { width: 100%; }
+        }
+        @media (max-width: 768px) {
+            .hero-title { font-size: 2.8rem; }
+            .bento-grid { grid-template-columns: 1fr; }
+            .bento-large, .bento-wide { grid-column: span 1; }
+            .marquee-item { font-size: 1.3rem; }
+            .cta-section h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- دکمه شناور تغییر تم -->
+    <button id="floatingThemeToggle" title="تغییر تم">
+        <i class="fas fa-moon"></i>
+    </button>
+
+    <!-- Background Glows -->
+    <div class="bg-glow-1"></div>
+    <div class="bg-glow-2"></div>
+    <div class="bg-glow-3"></div>
+
+    <!-- Topbar -->
+    <div class="shiran-topbar d-none d-lg-block">
+        <div class="container d-flex justify-content-between">
+            <div>
+                <span class="ml-4"><i class="fas fa-phone-alt"></i> ۰۲۱-۱۲۳۴۵۶۷۸</span>
+                <span class="ml-4"><i class="fas fa-envelope"></i> info@shirangym.ir</span>
+            </div>
+            <div>
+                <a href="#" class="ml-3" style="color: var(--text-muted);"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="ml-3" style="color: var(--text-muted);"><i class="fab fa-telegram"></i></a>
+                <a href="#" class="ml-3" style="color: var(--text-muted);"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="shiran-navbar">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="/" class="shiran-brand">
+                <img src="{% static 'img/logo.jpg' %}" alt="شیران">
+                باشگاه شیران
+            </a>
+            
+            <div class="d-none d-md-flex align-items-center gap-3">
+                <a href="/" class="shiran-nav-link">خانه</a>
+                <a href="/about/" class="shiran-nav-link active">درباره ما</a>
+                <a href="/classes/" class="shiran-nav-link">کلاس‌ها</a>
+                <a href="/contact/" class="shiran-nav-link">تماس</a>
+            </div>
+
+            <!-- ⭐ بخش وضعیت کاربر (اصلاح شده) -->
+            <div class="d-flex align-items-center">
+                {% if user.is_authenticated %}
+                    <span class="ml-3 d-none d-lg-inline" style="color: var(--text-muted); font-size: 0.9rem;">
+                        سلام، <strong style="color: var(--primary-gold);">{{ user.email }}</strong>
+                    </span>
+                    <a href="{% url 'account_logout' %}" class="btn btn-sm btn-outline-danger rounded-pill px-3 ml-2" style="border-color: #ef4444; color: #ef4444;">خروج</a>
+                {% else %}
+                    <a href="{% url 'account_login' %}" class="btn btn-sm btn-outline-light rounded-pill px-3 ml-2" style="border-color: var(--border-color); color: var(--text-main);">ورود</a>
+                    <a href="{% url 'account_signup' %}" class="btn btn-sm btn-gold rounded-pill px-3">عضویت</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero -->
+    <header class="hero-heavy">
+        <div class="container">
+            <div class="hero-badge">
+                <i class="fas fa-crown ml-2"></i> بیش از یک دهه افتخار
+            </div>
+            <h1 class="hero-title">داستان <span>شیران</span></h1>
+            <p class="hero-subtitle">
+                جایی که پشتکار به قدرت تبدیل می‌شود. ما فقط یک باشگاه نیستیم؛ ما خانه‌ای برای ساختن بهترین نسخه از شما هستیم.
+            </p>
+        </div>
+    </header>
+
+    <!-- 2. Marquee -->
+    <div class="marquee-section">
+        <div class="marquee-content">
+            <div class="marquee-item">عضو فعال <span>{{ member_count|default:"500" }}+</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">سال تجربه <span>{{ year_count|default:"10" }}</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">کلاس هفتگی <span>{{ class_count|default:"30" }}+</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">مربی حرفه‌ای <span>15+</span></div>
+            <div class="marquee-dot"></div>
+            <!-- تکرار -->
+            <div class="marquee-item">عضو فعال <span>{{ member_count|default:"500" }}+</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">سال تجربه <span>{{ year_count|default:"10" }}</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">کلاس هفتگی <span>{{ class_count|default:"30" }}+</span></div>
+            <div class="marquee-dot"></div>
+            <div class="marquee-item">مربی حرفه‌ای <span>15+</span></div>
+            <div class="marquee-dot"></div>
+        </div>
+    </div>
+
+    <!-- 3. Story -->
+    <section class="story-section">
+        <div class="container">
+            <div class="story-row">
+                <div class="story-text">
+                    <h2>ما <span>شیران</span> هستیم</h2>
+                    <p>
+                        باشگاه شیران در سال ۱۳۹۴ با یک هدف بزرگ تاسیس شد: ایجاد محیطی امن و حرفه‌ای که در آن هر فردی، با هر سطحی از آمادگی، بتواند به اهداف جسمانی خود برسد.
+                    </p>
+                    <div class="story-quote">
+                        "ما باور داریم که بدنسازی فقط بلند کردن وزنه نیست، بلکه ساختن یک سبک زندگی سالم و قدرتمند است."
+                    </div>
+                    <p>
+                        در طول این سال‌ها، هزاران ورزشکار به ما اعتماد کرده‌اند. تیم ما متشکل از مربیان بین‌المللی، متخصصان تغذیه و فیزیوتراپیست‌هاست که با عشق و تعهد در خدمت شما هستند.
+                    </p>
+                </div>
+                <div class="story-image">
+                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80" alt="باشگاه شیران">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Bento Grid -->
+    <section class="bento-section">
+        <div class="container">
+            <div class="bento-grid">
+                <div class="bento-card bento-large">
+                    <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=800&q=80" class="bento-image-bg" alt="تجهیزات">
+                    <div class="bento-icon"><i class="fas fa-dumbbell"></i></div>
+                    <h4>مجهزترین سالن بدنسازی</h4>
+                    <p>ما با استفاده از مدرن‌ترین دستگاه‌های روز دنیا، بهترین تجربه تمرینی را برای شما فراهم کرده‌ایم. هر وسیله‌ای که برای رسیدن به اهداف خود نیاز دارید، اینجاست.</p>
+                </div>
+                
+                <div class="bento-card stat-box">
+                    <div class="num">{{ member_count|default:"500" }}<span>+</span></div>
+                    <div class="label">عضو فعال</div>
+                </div>
+                <div class="bento-card stat-box">
+                    <div class="num">{{ year_count|default:"10" }}</div>
+                    <div class="label">سال تجربه</div>
+                </div>
+                
+                <div class="bento-card">
+                    <div class="bento-icon"><i class="fas fa-fist-raised"></i></div>
+                    <h4>قدرت</h4>
+                    <p>کشف قدرت جسمی و ذهنی پنهان شما.</p>
+                </div>
+                <div class="bento-card">
+                    <div class="bento-icon"><i class="fas fa-heartbeat"></i></div>
+                    <h4>سلامتی</h4>
+                    <p>برنامه‌های علمی و ایمن برای سلامت شما.</p>
+                </div>
+                
+                <div class="bento-card bento-wide">
+                    <div class="bento-icon"><i class="fas fa-users"></i></div>
+                    <h4>تیمی از بهترین‌ها</h4>
+                    <p>مربیان بین‌المللی، متخصصان تغذیه و فیزیوتراپیست‌ها در کنار شما هستند تا بهترین نتیجه را بگیرید. ما فقط به شما تمرین نمی‌دهیم، ما با شما زندگی ورزشی می‌کنیم.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Timeline -->
+    <section class="timeline-section">
+        <div class="timeline-step">
+            <div class="timeline-card">
+                <div class="timeline-year">۱۳۹۴</div>
+                <h5>شروع یک رؤیا</h5>
+                <p>تاسیس باشگاه شیران با یک سالن کوچک و تیمی ۳ نفره از مربیان مشتاق.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-card">
+                <div class="timeline-year">۱۳۹۷</div>
+                <h5>گسترش و پیشرفت</h5>
+                <p>افزودن تجهیزات پیشرفته و راه‌اندازی کلاس‌های تخصصی کراسفیت.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-card">
+                <div class="timeline-year">۱۴۰۰</div>
+                <h5>تحول دیجیتال</h5>
+                <p>راه‌اندازی سامانه آنلاین برنامه‌های تمرینی و بستر ارتباطی با مربیان.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+        <div class="timeline-step">
+            <div class="timeline-card">
+                <div class="timeline-year">۱۴۰۳</div>
+                <h5>افتخار امروز</h5>
+                <p>تبدیل شدن به یکی از قطب‌های بدنسازی با بیش از ۵۰۰ عضو فعال و تیمی مجرب.</p>
+            </div>
+            <div class="timeline-dot"></div>
+        </div>
+    </section>
+
+    <!-- 6. FAQ (بخش جدید) -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="faq-title">سوالات <span>متداول</span></h2>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>آیا برای شروع بدنسازی باید آمادگی خاصی داشته باشم؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>خیر، برنامه‌های ما برای همه سطوح از مبتدی تا حرفه‌ای طراحی شده‌اند. مربیان ما با توجه به وضعیت جسمانی شما، بهترین برنامه را طراحی می‌کنند.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>آیا امکان استفاده از مربی خصوصی وجود دارد؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>بله، باشگاه شیران دارای مربیان خصوصی حرفه‌ای است که می‌توانید با هماهنگی قبلی از خدمات آن‌ها بهره‌مند شوید.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">
+                    <span>ساعات کاری باشگاه چگونه است؟</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>باشگاه شیران همه روزه از ساعت ۶ صبح تا ۱۱ شب پذیرای شما عزیزان است.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. CTA -->
+    <section class="cta-section">
+        <div class="container">
+            <h2>آماده‌ای بخشی از داستان ما باشی؟</h2>
+            <p>همین حالا شروع کن و بهترین نسخه خودت را بساز</p>
+            <a href="{% url 'account_signup' %}" class="btn-gold">
+                <i class="fas fa-rocket ml-2"></i> عضویت در شیران
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="shiran-footer">
+        <div class="container text-center">
+            <p class="mb-0">&copy; ۲۰۲۶ باشگاه شیران. تمامی حقوق محفوظ است.</p>
+        </div>
+    </footer>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // مدیریت تم
+            const html = document.documentElement;
+            const toggleBtn = document.getElementById("floatingThemeToggle");
+            const icon = toggleBtn.querySelector("i");
+            
+            const savedTheme = localStorage.getItem("theme") || "dark";
+            html.setAttribute("data-theme", savedTheme);
+            updateIcon(savedTheme);
+
+            toggleBtn.addEventListener("click", function () {
+                const current = html.getAttribute("data-theme") || "dark";
+                const next = current === "dark" ? "light" : "dark";
+                html.setAttribute("data-theme", next);
+                localStorage.setItem("theme", next);
+                updateIcon(next);
+            });
+
+            function updateIcon(theme) {
+                if (theme === "dark") {
+                    icon.className = "fas fa-moon";
+                } else {
+                    icon.className = "fas fa-sun";
+                }
+            }
+
+            // FAQ Accordion
+            document.querySelectorAll(".faq-question").forEach(function (question) {
+                question.addEventListener("click", function () {
+                    const item = this.parentElement;
+                    item.classList.toggle("active");
+                });
+            });
+        });
+    </script>
+</body>
+</html>

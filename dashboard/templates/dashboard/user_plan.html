@@ -1,0 +1,78 @@
+{% extends '_base.html' %}
+{% block page_title %}برنامه {{ target.email }} — پنل شیران{% endblock %}
+
+{% block page_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>📋 برنامه تمرینی برای <span class="text-warning">{{ target.email }}</span></h3>
+    <a href="{% url 'dashboard:user_list' %}" class="btn btn-sm btn-neon-primary rounded-pill">
+        ← بازگشت به لیست
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card bg-dark border-warning mb-4">
+            <div class="card-header text-warning">➕ برنامه جدید</div>
+            <div class="card-body">
+                {# ⭐ enctype برای آپلود فایل ضروری است #}
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% for field in form %}
+                        <div class="form-group">
+                            <label class="text-light">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <small class="text-danger">{{ field.errors.0 }}</small>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    <button type="submit" class="btn btn-solid-accent w-100 rounded-pill">
+                        ثبت برنامه
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <h5 class="text-warning mb-3">برنامه‌های فعلی</h5>
+        {% for p in plans %}
+        <div class="card bg-dark border-secondary mb-3">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h6 class="text-warning mb-1">{{ p.title }}</h6>
+                    {% if p.is_active %}<span class="badge badge-success">فعال</span>
+                    {% else %}<span class="badge badge-secondary">غیرفعال</span>{% endif %}
+                </div>
+                <small class="text-muted">
+                    از {{ p.start_date|date:"Y/m/d" }}
+                    {% if p.end_date %} تا {{ p.end_date|date:"Y/m/d" }}{% endif %}
+                </small>
+                <p class="text-light mt-2 mb-2" style="white-space: pre-line;">{{ p.content }}</p>
+
+                {# ⭐ دکمه‌های PDF و ارسال ایمیل #}
+                <div class="d-flex flex-wrap gap-2">
+                    {% if p.pdf_file %}
+                        <a href="{% url 'dashboard:download_pdf' p.id %}" target="_blank"
+                           class="btn btn-sm btn-neon-primary rounded-pill">
+                            📄 دانلود PDF
+                        </a>
+                    {% endif %}
+
+                    <a href="{% url 'dashboard:send_plan_email' p.id %}"
+                       class="btn btn-sm btn-solid-accent rounded-pill">
+                        📧 ارسال به ایمیل کاربر
+                    </a>
+                </div>
+
+                {% if not p.pdf_file %}
+                    <small class="text-muted d-block mt-2">⚠️ PDF برای این برنامه آپلود نشده.</small>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-secondary">هنوز برنامه‌ای برای این کاربر ثبت نشده.</div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

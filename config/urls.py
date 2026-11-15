@@ -7,11 +7,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("pages.urls")),
     path("accounts/", include("allauth.urls")),
+    path("", include("accounts.urls")),              # ⭐ my-plans/ → /my-plans/
     path("products/", include("products.urls")),
+    path("panel/", include("dashboard.urls")),
 ]
 
 if settings.DEBUG:
-    urlpatterns += static(
-        settings.MEDIA_URL,
-        document_root=settings.MEDIA_ROOT
-    )
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -24,10 +24,16 @@ ALLOWED_HOSTS = [
     "localhost",
     "127.0.0.1",
     ".railway.app",
+    # ⭐ دامنه شیران — وقتی گرفتی از کامنت درآور
+    # "shirangym.ir",
+    # "www.shirangym.ir",
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://*.railway.app",
+    # ⭐ دامنه شیران — وقتی گرفتی از کامنت درآور
+    # "https://shirangym.ir",
+    # "https://www.shirangym.ir",
 ]
 
 if DEBUG:
@@ -66,6 +72,8 @@ INSTALLED_APPS = [
     "accounts",
     "pages",
     "products",
+    
+    "dashboard",
 
     "allauth",
     "allauth.account",
@@ -173,16 +181,31 @@ LOGOUT_REDIRECT_URL = "home"
 # Allauth
 # ==========================
 
-ACCOUNT_LOGIN_METHODS = {"email"}
+# ⭐ ورود با ایمیل یا نام کاربری
+# - کاربر عادی: با ایمیل ثبت‌نام/ورود می‌کند
+# - ادمین: با username وارد می‌شود
+ACCOUNT_LOGIN_METHODS = {"email", "username"}
 
+# ⭐ در ثبت‌نام: ایمیل + نام کاربری + رمز
+# (allauth 65+ الزام می‌کند username در signup باشد اگر در login methods باشد)
 ACCOUNT_SIGNUP_FIELDS = [
     "email*",
+    "username*",
     "password1*",
     "password2*",
 ]
 
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_SESSION_REMEMBER = True
+
+# ⭐ تأیید ایمیل اختیاری — برای شروع ساده‌تر
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+
+# ⭐ بعد از تأیید ایمیل، کاربر به خانه برود
+ACCOUNT_EMAIL_CONFIRMATION_AUTHENTICATED_REDIRECT_URL = "home"
+
+# ⭐ بعد از ورود، اگر ادمین بود به پنل برود (بعداً با signal فعال می‌کنیم)
+# LOGIN_REDIRECT_URL = "home"
 
 # ==========================
 # Email
